@@ -1,0 +1,73 @@
+apply plugin: 'java'
+apply plugin: 'distribution'
+apply plugin: 'eclipse'
+
+defaultTasks('clean', 'build')
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+	mavenCentral()
+}
+
+configurations.all {
+	transitive = false
+}
+
+dependencies {
+	compile fileTree(dir: 'dist/libs', include: '*.jar')
+}
+
+def generalManifest = manifest {
+	attributes(
+		'Built-By': System.getProperty('user.name'),
+		'Built-Date': new Date().format("yyyy-MM-dd HH:mm:ss"),
+		'Implementation-URL': 'http://www.xxx.com/',
+		'Class-Path': configurations.runtime.collect { '../libs/' + it.name }.join(' '))
+}
+
+jar {
+	archiveName = 'SerialHardLock-0.0.jar'
+	manifest {
+		from(generalManifest)
+		attributes('Main-Class': 'hardlock.TwoWaySerialComm')
+	}
+}
+
+task zip(type: Zip, dependsOn: build) {
+	from('dist') {
+		exclude('libs')
+	}
+	into('libs') {
+		from(configurations.runtime)
+	}
+	into('libs') {
+		from(jar)
+	}
+	baseName = 'SerialHardLock_' + new Date().format("yyyy-MM-dd")
+	println 'Build in build/distributions/' + baseName + '.zip'
+}
+
+build.finalizedBy(zip)
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '3.5'
+}
+
+eclipse {
+	project {
+		name = 'SerialHardLock'
+		comment 'Private Project'
+		natures 'org.eclipse.buildship.core.gradleprojectbuilde'
+	}
+	jdt {
+		file {
+			whenMerged {jdt ->
+				def propertiesField = org.gradle.plugins.ide.internal.generator.PropertiesPersistableConfigurationObject.getDeclaredField('properties')
+				propertiesField.accessible = true
+				Properties properties = propertiesField.get(jdt)
+				properties.setProperty 'org.eclipse.jdt.core.compiler.problem.incompleteEnumSwitch', 'ignore'
+			}
+		}
+	}
+}
