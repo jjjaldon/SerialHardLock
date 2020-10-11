@@ -1,5 +1,6 @@
-/* Copyright (C) 2018 Sacrifice
- *
+/*
+ * Copyright © 2004-2020 SerialHardLock
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -7,11 +8,11 @@
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 package hardlock;
 
@@ -27,12 +28,17 @@ import gnu.io.SerialPortEventListener;
  */
 public final class SerialReader implements SerialPortEventListener
 {
-	private final InputStream inputStream;
+	private final InputStream _inputStream;
 	private final byte[] buffer = new byte[1024];
 	
 	public SerialReader(InputStream in)
 	{
-		this.inputStream = in;
+		_inputStream = in;
+	}
+	
+	public InputStream get_inputStream()
+	{
+		return _inputStream;
 	}
 	
 	@Override
@@ -42,7 +48,7 @@ public final class SerialReader implements SerialPortEventListener
 		try
 		{
 			int len = 0;
-			while ((data = inputStream.read()) > -1)
+			while ((data = _inputStream.read()) > -1)
 			{
 				if (data == '\n')
 				{
@@ -57,10 +63,5 @@ public final class SerialReader implements SerialPortEventListener
 			e.printStackTrace();
 			System.exit(-1);
 		}
-	}
-	
-	public InputStream get_inputStream()
-	{
-		return inputStream;
 	}
 }

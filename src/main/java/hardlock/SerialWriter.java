@@ -1,5 +1,6 @@
-/* Copyright (C) 2018 Sacrifice
- *
+/*
+ * Copyright © 2004-2020 SerialHardLock
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -7,11 +8,11 @@
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 package hardlock;
 
@@ -23,11 +24,16 @@ import java.io.OutputStream;
  */
 public final class SerialWriter implements Runnable
 {
-	private final OutputStream outputStream;
+	private final OutputStream _outputStream;
 	
 	public SerialWriter(OutputStream out)
 	{
-		this.outputStream = out;
+		_outputStream = out;
+	}
+	
+	public OutputStream get_outputStream()
+	{
+		return _outputStream;
 	}
 	
 	@Override
@@ -38,7 +44,7 @@ public final class SerialWriter implements Runnable
 			int c = 0;
 			while ((c = System.in.read()) > -1)
 			{
-				this.outputStream.write(c);
+				_outputStream.write(c);
 			}
 		}
 		catch (IOException e)
@@ -46,10 +52,5 @@ public final class SerialWriter implements Runnable
 			e.printStackTrace();
 			System.exit(-1);
 		}
-	}
-	
-	public OutputStream get_outputStream()
-	{
-		return outputStream;
 	}
 }

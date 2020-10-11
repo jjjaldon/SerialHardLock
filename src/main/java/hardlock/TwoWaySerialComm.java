@@ -1,5 +1,6 @@
-/* Copyright (C) 2018 Sacrifice
- *
+/*
+ * Copyright © 2004-2020 SerialHardLock
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -7,11 +8,11 @@
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 package hardlock;
 
@@ -36,33 +37,6 @@ public final class TwoWaySerialComm
 	public TwoWaySerialComm()
 	{
 		super();
-	}
-	
-	public void connect(String portName) throws Exception
-	{
-		final CommPortIdentifier commPortIdentifier = CommPortIdentifier.getPortIdentifier(portName);
-		if (commPortIdentifier.isCurrentlyOwned())
-		{
-			LOG.warning("Error: Port is currently in use");
-		}
-		else
-		{
-			final CommPort commPort = commPortIdentifier.open(this.getClass().getName(), HardLockSettings.TIME_OUT);
-			if (commPort instanceof SerialPort)
-			{
-				final SerialPort serialPort = (SerialPort) commPort;
-				serialPort.setSerialPortParams(HardLockSettings.BAUD_RATE, HardLockSettings.DATA_BITS, HardLockSettings.STOP_BITS, HardLockSettings.PARITY_BITS);
-				final InputStream inputStream = serialPort.getInputStream();
-				final OutputStream outputStream = serialPort.getOutputStream();
-				new Thread(new SerialWriter(outputStream)).start();
-				serialPort.addEventListener(new SerialReader(inputStream));
-				serialPort.notifyOnDataAvailable(true);
-			}
-			else
-			{
-				System.out.println("Error: Only serial ports are handled by this example.");
-			}
-		}
 	}
 	
 	public static void main(String[] args)
@@ -98,6 +72,33 @@ public final class TwoWaySerialComm
 		catch (Exception e)
 		{
 			e.printStackTrace();
+		}
+	}
+	
+	public void connect(String portName) throws Exception
+	{
+		final CommPortIdentifier commPortIdentifier = CommPortIdentifier.getPortIdentifier(portName);
+		if (commPortIdentifier.isCurrentlyOwned())
+		{
+			LOG.warning("Error: Port is currently in use");
+		}
+		else
+		{
+			final CommPort commPort = commPortIdentifier.open(this.getClass().getName(), HardLockSettings.TIME_OUT);
+			if (commPort instanceof SerialPort)
+			{
+				final SerialPort serialPort = (SerialPort) commPort;
+				serialPort.setSerialPortParams(HardLockSettings.BAUD_RATE, HardLockSettings.DATA_BITS, HardLockSettings.STOP_BITS, HardLockSettings.PARITY_BITS);
+				final InputStream inputStream = serialPort.getInputStream();
+				final OutputStream outputStream = serialPort.getOutputStream();
+				new Thread(new SerialWriter(outputStream)).start();
+				serialPort.addEventListener(new SerialReader(inputStream));
+				serialPort.notifyOnDataAvailable(true);
+			}
+			else
+			{
+				System.out.println("Error: Only serial ports are handled by this example.");
+			}
 		}
 	}
 }

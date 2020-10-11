@@ -4,7 +4,8 @@ apply plugin: 'eclipse'
 
 defaultTasks('clean', 'build')
 
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
 
 repositories {
 	mavenCentral()
@@ -22,8 +23,9 @@ def generalManifest = manifest {
 	attributes(
 		'Built-By': System.getProperty('user.name'),
 		'Built-Date': new Date().format("yyyy-MM-dd HH:mm:ss"),
-		'Implementation-URL': 'http://www.xxx.com/',
-		'Class-Path': configurations.runtime.collect { '../libs/' + it.name }.join(' '))
+		'Implementation-URL': 'https://www.xxx.com/',
+		'Built-With': System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')',
+		'Class-Path': configurations.runtime.collect({ '../libs/' + it.getName() }).join(' '))
 }
 
 jar {
@@ -49,10 +51,6 @@ task zip(type: Zip, dependsOn: build) {
 }
 
 build.finalizedBy(zip)
-
-task wrapper(type: Wrapper) {
-	gradleVersion = '3.5'
-}
 
 eclipse {
 	project {

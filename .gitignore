@@ -1,5 +1,5 @@
 /.gradle/
 /bin/
-.classpath
-.project
+/.classpath
+/.project
 /build/
