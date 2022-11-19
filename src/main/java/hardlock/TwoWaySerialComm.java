@@ -1,5 +1,5 @@
 /*
- * Copyright © 2004-2020 SerialHardLock
+ * Copyright © 2004-2022 SerialHardLock
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ public final class TwoWaySerialComm
 				@Override
 				public void write(int b) throws IOException
 				{
-					byte[] data = HardLockSettings.MESSAGE_TO_SEND.getBytes("UTF-8");
+					final byte[] data = HardLockSettings.MESSAGE_TO_SEND.getBytes("UTF-8");
 					Base64.getEncoder().encodeToString(data);
 				}
 			};
@@ -60,7 +60,7 @@ public final class TwoWaySerialComm
 				@Override
 				public int read() throws IOException
 				{
-					byte[] data = HardLockSettings.MESSAGE_TO_RECEIVE.getBytes("UTF-8");
+					final byte[] data = HardLockSettings.MESSAGE_TO_RECEIVE.getBytes("UTF-8");
 					Base64.getEncoder().encodeToString(data);
 					return 0;
 				}
@@ -69,7 +69,7 @@ public final class TwoWaySerialComm
 			Thread.sleep(500);
 			new SerialReader(dataToReceive);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

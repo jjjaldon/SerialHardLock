@@ -1,5 +1,5 @@
 /*
- * Copyright © 2004-2020 SerialHardLock
+ * Copyright © 2004-2022 SerialHardLock
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,14 +21,14 @@ import gnu.io.SerialPort;
 /**
  * @author Sacrifice
  */
-public class HardLockSettings
+public final class HardLockSettings
 {
 	public static final int TIME_OUT = 2000;
 	public static final int BAUD_RATE = 19200;
 	public static final int DATA_BITS = SerialPort.DATABITS_8;
 	public static final int STOP_BITS = SerialPort.STOPBITS_1;
 	public static final int PARITY_BITS = SerialPort.PARITY_NONE;
-	public static final String PORT_NAME = "COM3";
+	public static final String PORT_NAME = "COM1";
 	public static final String MESSAGE_TO_SEND = "Copyright (C) 2018 Sacrifice"; // Q29weXJpZ2h0IChDKSAyMDE4IFNhY3JpZmljZQ==
-	protected static final String MESSAGE_TO_RECEIVE = "GNU General Public License"; // R05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2U=
+	public static final String MESSAGE_TO_RECEIVE = "GNU General Public License"; // R05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2U=
 }

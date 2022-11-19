@@ -1,5 +1,5 @@
 /*
- * Copyright © 2004-2020 SerialHardLock
+ * Copyright © 2004-2022 SerialHardLock
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ public final class SerialWriter implements Runnable
 				_outputStream.write(c);
 			}
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			e.printStackTrace();
 			System.exit(-1);

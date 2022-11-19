@@ -4,11 +4,12 @@ apply plugin: 'eclipse'
 
 defaultTasks('clean', 'build')
 
-sourceCompatibility = JavaVersion.VERSION_15
-targetCompatibility = JavaVersion.VERSION_15
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 configurations.all {
@@ -16,7 +17,7 @@ configurations.all {
 }
 
 dependencies {
-	compile fileTree(dir: 'dist/libs', include: '*.jar')
+	implementation fileTree(dir: 'dist/libs', include: '*.jar')
 }
 
 def generalManifest = manifest {
@@ -25,11 +26,11 @@ def generalManifest = manifest {
 		'Built-Date': new Date().format("yyyy-MM-dd HH:mm:ss"),
 		'Implementation-URL': 'https://www.xxx.com/',
 		'Built-With': System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')',
-		'Class-Path': configurations.runtime.collect({ '../libs/' + it.getName() }).join(' '))
+		'Class-Path': configurations.runtimeClasspath.files.collect({ '../libs/' + it.getName() }).join(' '))
 }
 
 jar {
-	archiveName = 'SerialHardLock-0.0.jar'
+	archiveName = 'SerialHardLock-1.0.jar'
 	manifest {
 		from(generalManifest)
 		attributes('Main-Class': 'hardlock.TwoWaySerialComm')
@@ -41,13 +42,13 @@ task zip(type: Zip, dependsOn: build) {
 		exclude('libs')
 	}
 	into('libs') {
-		from(configurations.runtime)
+		from(configurations.runtimeClasspath)
 	}
 	into('libs') {
 		from(jar)
 	}
-	baseName = 'SerialHardLock_' + new Date().format("yyyy-MM-dd")
-	println 'Build in build/distributions/' + baseName + '.zip'
+	archiveBaseName = 'SerialHardLock_' + new Date().format("yyyy-MM-dd")
+	println 'Build in build/distributions/' + archiveBaseName + '.zip'
 }
 
 build.finalizedBy(zip)
