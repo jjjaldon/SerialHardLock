@@ -34,10 +34,7 @@ public final class TwoWaySerialComm
 {
 	public static final Logger LOG = Logger.getLogger(TwoWaySerialComm.class.getName());
 	
-	public TwoWaySerialComm()
-	{
-		super();
-	}
+	public TwoWaySerialComm() {}
 	
 	public static void main(String[] args)
 	{
@@ -101,4 +98,5 @@ public final class TwoWaySerialComm
 			}
 		}
 	}
+
 }
